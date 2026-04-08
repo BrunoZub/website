@@ -1,56 +1,220 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import { getCollection } from 'astro:content';
+// Component Imports
+import CallToAction from '../components/CallToAction.astro';
+// Page section components
+import ContactCTA from '../components/ContactCTA.astro';
+import Grid from '../components/Grid.astro';
+import Hero from '../components/Hero.astro';
+import Icon from '../components/Icon.astro';
+import Pill from '../components/Pill.astro';
+import PortfolioPreview from '../components/PortfolioPreview.astro';
+import Skills from '../components/Skills.astro';
+// Layout import — provides basic page elements: <head>, <nav>, <footer> etc.
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+// Content Fetching: List four most recent work projects
+const projects = (await getCollection('work'))
+	.sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
+	.slice(0, 4);
+
+// Full Astro Component Syntax:
+// https://docs.astro.build/basics/astro-components/
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header />
-		<main>
-			<h1>🚀 Bruno Zub</h1>
-			<p>
-				<strong>IT Support Specialist & Junior Systems Administrator</strong>
-			</p>
-			<p>
-				I'm transitioning from a career in video editing into IT and Systems Administration. 
-				Over the last two years, I've built a production-grade homelab from the ground up, teaching myself virtualization, networking, containerization, and automation.
-			</p>
-			
-			<h2>🛠️ Tech Stack</h2>
-			<ul>
-				<li><strong>Infrastructure & Virtualization:</strong> Proxmox VE, Linux (Debian/Ubuntu), Windows Server, LXC</li>
-				<li><strong>Containerization:</strong> Docker, Docker Compose, Portainer</li>
-				<li><strong>Networking & Security:</strong> Tailscale (Zero Trust), Nginx, Cloudflare Tunnels, AdGuard Home (DNS Sinkholing), TCP/IP, DHCP</li>
-				<li><strong>Storage:</strong> ZFS, SMB/NFS Shares</li>
-				<li><strong>IT Operations:</strong> Active Directory, Nextcloud, Vaultwarden, RDP, SSH, VNC</li>
-				<li><strong>Scripting & Hardware:</strong> Python, ESP32/Pi Pico, Desktop/Server Component Diagnostics & Assembly</li>
-			</ul>
+<BaseLayout>
+	<div class="stack gap-20 lg:gap-48">
+		<div class="wrapper stack gap-8 lg:gap-20">
+			<header class="hero">
+				<Hero
+					title="Hello, I'm Bruno Zub"
+					tagline="Transitioning from video editing to IT Support and Systems Administration."
+					align="start"
+				>
+					<div class="roles">
+						<Pill><Icon icon="terminal-window" size="1.33em" /> SysAdmin</Pill>
+						<Pill><Icon icon="strategy" size="1.33em" /> Homelabber</Pill>
+						<Pill><Icon icon="list" size="1.33em" /> IT Support</Pill>
+					</div>
+				</Hero>
 
-			<h2>💻 Infrastructure Projects</h2>
-			<div class="projects">
-				<h3>1. Hardware-Accelerated Container Environment</h3>
-				<p>Architected a Proxmox-based home datacenter to run multiple isolated Linux (LXC) containers while sharing a single physical GPU through complex UID/GID mapping. This allowed for hardware-accelerated media transcoding and data processing without compromising container security perimeters.</p>
-				<p><em>Tech: Proxmox VE, LXC, Debian CLI, GPU Passthrough, Privilege Management.</em></p>
+				<img
+					alt="Bruno Zub"
+					width="480"
+					height="620"
+					src="/assets/portrait.jpg"
+				/>
+			</header>
 
-				<h3>2. Hybrid-Cloud Reverse Proxy & Monitoring</h3>
-				<p>Designed a hybrid network using a cloud VPS as a secure reverse proxy to route encrypted traffic to my on-premise homelab. Implemented Uptime Kuma to monitor 20+ active internal services with automated downtime alerting via webhooks.</p>
-				<p><em>Tech: Cloud VPS, Nginx, Cloudflare Tunnels, Uptime Kuma, Zero-Trust Networking.</em></p>
+			<Skills />
+		</div>
 
-				<h3>3. Self-Hosted Enterprise Infrastructure</h3>
-				<p>Deployed a resilient, containerized suite of self-hosted enterprise services. This includes a ZFS-backed network storage solution for automated backups, network-wide DNS filtering, and node-based workflow automation to streamline server maintenance.</p>
-				<p><em>Tech: Docker Compose, ZFS, SMB, Nextcloud, n8n, AdGuard Home.</em></p>
-			</div>
+		<main class="wrapper stack gap-20 lg:gap-48">
+			<section class="section with-background with-cta">
+				<header class="section-header stack gap-2 lg:gap-4">
+					<h3>Infrastructure Projects</h3>
+					<p>Take a look at some of the systems and networks I've built and administered.</p>
+				</header>
 
-			<p>
-				<em>Note: Detailed documentation and architecture write-ups for these projects are available in my <a href="/blog">Blog</a> section.</em>
-			</p>
+				<div class="gallery">
+					<Grid variant="offset">
+						{
+							projects.map((project) => (
+								<li>
+									<PortfolioPreview project={project} />
+								</li>
+							))
+						}
+					</Grid>
+				</div>
+			</section>
 		</main>
-		<Footer />
-	</body>
-</html>
+
+		<ContactCTA />
+	</div>
+</BaseLayout>
+
+<style>
+	.hero {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 2rem;
+	}
+
+	.roles {
+		display: none;
+	}
+
+	.hero img {
+		aspect-ratio: 5 / 4;
+		object-fit: cover;
+		object-position: top;
+		border-radius: 1.5rem;
+		box-shadow: var(--shadow-md);
+	}
+
+	@media (min-width: 50em) {
+		.hero {
+			display: grid;
+			grid-template-columns: 6fr 4fr;
+			padding-inline: 2.5rem;
+			gap: 3.75rem;
+		}
+
+		.roles {
+			margin-top: 0.5rem;
+			display: flex;
+			gap: 0.5rem;
+		}
+
+		.hero img {
+			aspect-ratio: 3 / 4;
+			border-radius: 4.5rem;
+			object-fit: cover;
+		}
+	}
+
+	/* ====================================================== */
+
+	.section {
+		display: grid;
+		gap: 2rem;
+	}
+
+	.with-background {
+		position: relative;
+	}
+
+	.with-background::before {
+		--hero-bg: var(--bg-image-subtle-2);
+
+		content: '';
+		position: absolute;
+		pointer-events: none;
+		left: 50%;
+		width: 100vw;
+		aspect-ratio: calc(2.25 / var(--bg-scale));
+		top: 0;
+		transform: translateY(-75%) translateX(-50%);
+		background:
+			url('/assets/backgrounds/noise.png') top center/220px repeat,
+			var(--hero-bg) center center / var(--bg-gradient-size) no-repeat,
+			var(--gray-999);
+		background-blend-mode: overlay, normal, normal, normal;
+		mix-blend-mode: var(--bg-blend-mode);
+		z-index: -1;
+	}
+
+	.with-background.bg-variant::before {
+		--hero-bg: var(--bg-image-subtle-1);
+	}
+
+	.section-header {
+		justify-self: center;
+		text-align: center;
+		max-width: 50ch;
+		font-size: var(--text-md);
+		color: var(--gray-300);
+	}
+
+	.section-header h3 {
+		font-size: var(--text-2xl);
+	}
+
+	@media (min-width: 50em) {
+		.section {
+			grid-template-columns: repeat(4, 1fr);
+			grid-template-areas: 'header header header header' 'gallery gallery gallery gallery';
+			gap: 5rem;
+		}
+
+		.section.with-cta {
+			grid-template-areas: 'header header header cta' 'gallery gallery gallery gallery';
+		}
+
+		.section-header {
+			grid-area: header;
+			font-size: var(--text-lg);
+		}
+
+		.section-header h3 {
+			font-size: var(--text-4xl);
+		}
+
+		.with-cta .section-header {
+			justify-self: flex-start;
+			text-align: left;
+		}
+
+		.gallery {
+			grid-area: gallery;
+		}
+
+		.cta {
+			grid-area: cta;
+		}
+	}
+
+	/* ====================================================== */
+
+	.mention-card {
+		display: flex;
+		height: 7rem;
+		justify-content: center;
+		align-items: center;
+		text-align: center;
+		border: 1px solid var(--gray-800);
+		border-radius: 1.5rem;
+		color: var(--gray-300);
+		background: var(--gradient-subtle);
+		box-shadow: var(--shadow-sm);
+	}
+
+	@media (min-width: 50em) {
+		.mention-card {
+			border-radius: 1.5rem;
+			height: 9.5rem;
+		}
+	}
+</style>
