@@ -126,6 +126,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 		grid-column: 2 / 4;
 	}
 
+	.content p {
+		margin-bottom: 1.5rem;
+	}
+
+	.content p:last-of-type {
+		margin-bottom: 0;
+	}
+
 	.content :global(a) {
 		text-decoration: 1px solid underline transparent;
 		text-underline-offset: 0.25em;
