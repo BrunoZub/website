@@ -5,10 +5,13 @@ import Icon from './Icon.astro';
 
 <aside>
 	<h2>Interested in working together?</h2>
-	<CallToAction href="mailto:me@example.com">
-		Send Me a Message
-		<Icon icon="paper-plane-tilt" size="1.2em" />
-	</CallToAction>
+	<div class="actions">
+		<CallToAction href="https://linkedin.com/in/brunozub">
+			Message on LinkedIn
+			<Icon icon="paper-plane-tilt" size="1.2em" />
+		</CallToAction>
+		<p class="email-text">Or email me at:<br/><strong>bruno@brunozub.com</strong></p>
+	</div>
 </aside>
 
 <style>
@@ -30,6 +33,24 @@ import Icon from './Icon.astro';
 		max-width: 15ch;
 	}
 
+	.actions {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 1.5rem;
+	}
+
+	.email-text {
+		text-align: center;
+		color: var(--gray-300);
+		font-size: var(--text-md);
+	}
+
+	.email-text strong {
+		color: var(--gray-100);
+		user-select: all; /* Makes it easy to copy */
+	}
+
 	@media (min-width: 50em) {
 		aside {
 			padding: 7.5rem;
@@ -41,6 +62,14 @@ import Icon from './Icon.astro';
 		h2 {
 			font-size: var(--text-3xl);
 			text-align: left;
+		}
+
+		.actions {
+			align-items: flex-end;
+		}
+		
+		.email-text {
+			text-align: right;
 		}
 	}
 </style>
