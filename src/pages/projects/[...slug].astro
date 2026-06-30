@@ -44,7 +44,12 @@ const { Content } = await render(entry);
 			</header>
 			<main class="wrapper">
 				<div class="stack gap-10 content">
-					{entry.data.img && <img src={entry.data.img} alt={entry.data.img_alt || ''} />}
+					{entry.data.img && (
+						<div class="hero-image-wrapper">
+							<img src={entry.data.img} alt={entry.data.img_alt || ''} />
+							{entry.data.img_caption && <p class="image-caption">{entry.data.img_caption}</p>}
+						</div>
+					)}
 					<div class="content">
 						<Content />
 					</div>
@@ -130,6 +135,21 @@ const { Content } = await render(entry);
 	.content :global(a:hover),
 	.content :global(a:focus) {
 		text-decoration-color: currentColor;
+	}
+
+	.hero-image-wrapper {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.5rem;
+	}
+
+	.image-caption {
+		font-size: var(--text-sm);
+		color: var(--gray-400);
+		text-align: center;
+		max-width: 80%;
+		font-style: italic;
 	}
 
 	@media (min-width: 50em) {

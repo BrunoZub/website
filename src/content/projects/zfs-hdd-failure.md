@@ -2,7 +2,8 @@
 title: "Zero Bytes Lost: My Epic Battle Against a Dying Hard Drive and the Magic of ZFS"
 publishDate: 2026-06-30 00:00:00
 img: /assets/zfs-hero.webp
-img_alt: "Yes, this is an AI image. Look, I can build high-availability Proxmox clusters, but I can't draw a wizard fighting a hard drive. We all have our limits."
+img_alt: "A wizard fighting a hard drive, or something close to it."
+img_caption: "Yes, this is an AI image. Look, I can build high-availability Proxmox clusters, but I can't draw a wizard fighting a hard drive. We all have our limits."
 description: |
   A frantic Tuesday afternoon trying to outsmart a failing piece of metal, featuring Proxmox, ZFS RAIDZ1, and a whole lot of command line.
 tags:
